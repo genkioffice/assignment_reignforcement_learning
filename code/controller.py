@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from policy import EGreedyPolicy
 from evaluator import TQEvaluator
@@ -33,13 +34,15 @@ class Controller:
             agent = TQAgent(policy)
             tmp = agent.update(self.start[1], self.start[0], evaluator, env)
             performances.append(tmp)
+        t = time.localtime()
+        timestamp = time.strftime('%b-%d-%Y_%H%M', t)
         plt.figure(figsize=(6,4))
         plt.plot(performances)
         plt.title(f"salsa iterations(n = {self.num_episodes})")
-        plt.savefig("../plot/salsa_iterations.png")
+        plt.savefig(f"../plot/salsa_iterations_{timestamp}.png")
         
         plt.figure(figsize=(8,8))
         sns.heatmap(evaluator.V)
         plt.title(f"salsa heatmap(n = {self.num_episodes})")
-        plt.savefig("../plot/salsa_heat.png")
+        plt.savefig(f"../plot/salsa_heat_{timestamp}.png")
         
