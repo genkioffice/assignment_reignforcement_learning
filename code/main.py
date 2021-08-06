@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 
-from controller import Controller
+from controller import TQController, QLController
 
 
 if __name__ == '__main__':
@@ -26,12 +26,14 @@ if __name__ == '__main__':
     
     # num_episode = 10000
     params = {
-        "num_episodes": 500000,
+        "num_episodes": 50,
         "alpha": 0.05,
         "epsilon": 0.05,
         "gamma": 0.97
     }
-    cntr = Controller(graph, start, goal, **params)
+    # cntr = TQController(graph, start, goal, **params)
+    cntr = QLController(graph, start, goal, **params)
+
     cntr.play()
     
     
