@@ -35,3 +35,9 @@ class TQEvaluator(BasicEvaluator):
     
     def get_value(self, cx, cy):
         return self.V[cy][cx]
+
+    def save_pef(self, val):
+        self.performance = val
+
+    def get_pef(self):
+        return self.performance

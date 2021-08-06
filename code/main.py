@@ -1,9 +1,11 @@
 import numpy as np
+import sys
+
 from controller import Controller
 
 
 if __name__ == '__main__':
-
+    sys.setrecursionlimit(10000)
     # graph = np.zeros((12,12))
     graph = np.array([
         [0] * 12,
@@ -23,10 +25,13 @@ if __name__ == '__main__':
     goal = [10, 10]
     
     # num_episode = 10000
-    # params = {
-
-    # }
-    cntr = Controller(graph, start, goal)
+    params = {
+        "num_episodes": 500000,
+        "alpha": 0.05,
+        "epsilon": 0.05,
+        "gamma": 0.97
+    }
+    cntr = Controller(graph, start, goal, **params)
     cntr.play()
     
     

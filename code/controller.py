@@ -20,8 +20,8 @@ class Controller:
         self.graph = graph
         self.start = start
         self.goal = goal
-        self.num_episodes = kwargs.get('num_episodes', 1000)
-        self.alpha = kwargs.get('alpha', 0.6)
+        self.num_episodes = kwargs.get('num_episodes', 1000000)
+        self.alpha = kwargs.get('alpha', 0.9)
         self.epsilon = kwargs.get('epsilon', 0.3)
         self.gamma = kwargs.get('gamma', 0.5)
         
@@ -32,17 +32,18 @@ class Controller:
         performances = []
         for i in np.arange(self.num_episodes):
             agent = TQAgent(policy)
-            tmp = agent.update(self.start[1], self.start[0], evaluator, env)
-            performances.append(tmp)
+            # tmp = agent.update(self.start[1], self.start[0], evaluator, env)
+            agent.wrapper(self.start[1], self.start[0], evaluator, env)
+            performances.append(evaluator.get_pef())
         t = time.localtime()
         timestamp = time.strftime('%b-%d-%Y_%H%M', t)
         plt.figure(figsize=(6,4))
         plt.plot(performances)
         plt.title(f"salsa iterations(n = {self.num_episodes})")
-        plt.savefig(f"../plot/salsa_iterations_{timestamp}.png")
+        plt.savefig(f"../plot/salsa_iterations_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
         
         plt.figure(figsize=(8,8))
         sns.heatmap(evaluator.V)
         plt.title(f"salsa heatmap(n = {self.num_episodes})")
-        plt.savefig(f"../plot/salsa_heat_{timestamp}.png")
+        plt.savefig(f"../plot/salsa_heat_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
         

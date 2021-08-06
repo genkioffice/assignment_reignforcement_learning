@@ -1,6 +1,11 @@
 import numpy as np
+import sys
+
 from evaluator import TQEvaluator
 from environment import TQEnvironment
+
+
+sys.setrecursionlimit(100000)
 
 class BasicAgent:
     '''
@@ -33,5 +38,19 @@ class TQAgent(BasicAgent):
         reward = env.fast_reward(x,y)
         evaluator.tq(reward, px, py, x, y)
         if env.is_goal(x,y):
-            return self.performance
-        return self.update(x, y, evaluator, env)
+            evaluator.save_pef(self.performance)
+        return x, y
+        # if env.is_goal(x,y):
+        #     return self.performance
+        # return self.update(x, y, evaluator, env)
+
+    def wrapper(self, px, py, evaluator, env):
+        # i = 0
+        while (~(env.is_goal(px, py))):
+            # i+=1
+            px, py = self.update(px, py, evaluator, env)
+            # print(i)
+            # print(px, py)
+            if env.is_goal(px,py):
+                # print ("goal")
+                return 
