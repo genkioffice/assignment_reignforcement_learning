@@ -41,10 +41,15 @@ class EGreedyPolicy(BasicPolicy):
                 y = py + self.ry[i]
                 # check feasibility
                 if env.is_invalid(x, y):
-                    pos.append(float('inf'))
+                    pos.append(-float('inf'))
                 else:
                     pos.append(self.gamma * evaluator.get_value(x, y) + env.fast_reward(x, y))
-            idx = np.argmax(pos)
+            pos = [i for i, v in enumerate(pos) if v >= np.max(pos)]
+            # randomize argmaxes to avoid be trapped
+            np.random.shuffle(pos)
+            idx = pos[0]
             x = px + self.rx[idx]
             y = py + self.ry[idx]
+            # print(pos)
+            # print(y, x)
             return x, y

@@ -26,14 +26,14 @@ if __name__ == '__main__':
     
     # num_episode = 10000
     params = {
-        "num_episodes": 50,
-        "alpha": 0.05,
-        "epsilon": 0.05,
+        "num_episodes": 100,
+        "alpha": 0.1,
+        "epsilon": 0.1,
         "gamma": 0.97
     }
-    # cntr = TQController(graph, start, goal, **params)
+    cntr = TQController(graph, start, goal, **params)
+    cntr.play()
     cntr = QLController(graph, start, goal, **params)
-
     cntr.play()
     
     

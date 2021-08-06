@@ -55,7 +55,7 @@ class QLEvaluator(TQEvaluator):
         # V[cy][cx] is given and the next action is calculated
         nx_max_q = self.calu_nx_q(cx, cy, env)
         # print(reward + self.gamma * nx_max_q)
-        self.V[py][px] += -self.alpha * self.V[py][px] + self.alpha * (reward + self.gamma * nx_max_q)
+        self.V[py][px] += ((-self.alpha) * self.V[py][px]) + (self.alpha * (reward + self.gamma * nx_max_q))
 
     def calu_nx_q(self, cx, cy, env:TQEnvironment):
         nx_qs = []

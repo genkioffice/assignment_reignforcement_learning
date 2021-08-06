@@ -23,7 +23,7 @@ class TQController:
         self.num_episodes = kwargs.get('num_episodes', 1000000)
         self.alpha = kwargs.get('alpha', 0.9)
         self.epsilon = kwargs.get('epsilon', 0.3)
-        self.gamma = kwargs.get('gamma', 0.5)
+        self.gamma = kwargs.get('gamma', 0.9)
         
     def play(self):
         policy = EGreedyPolicy(self.epsilon, self.gamma)
@@ -31,6 +31,7 @@ class TQController:
         env = TQEnvironment(self.graph, self.goal, self.start)
         performances = []
         for i in np.arange(self.num_episodes):
+            # print(i)
             agent = TQAgent(policy)
             # tmp = agent.update(self.start[1], self.start[0], evaluator, env)
             agent.wrapper(self.start[1], self.start[0], evaluator, env)
@@ -40,12 +41,12 @@ class TQController:
         plt.figure(figsize=(6,4))
         plt.plot(performances)
         plt.title(f"salsa iterations(n = {self.num_episodes})")
-        plt.savefig(f"../plot/salsa_iterations_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
+        plt.savefig(f"../plot/revised_salsa_iterations_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
         
         plt.figure(figsize=(8,8))
         sns.heatmap(evaluator.V)
         plt.title(f"salsa heatmap(n = {self.num_episodes})")
-        plt.savefig(f"../plot/salsa_heat_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
+        plt.savefig(f"../plot/revised_salsa_heat_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
 
 class QLController(TQController):
     def __init__(self, graph, start, goal, **kwargs) -> None:
@@ -58,7 +59,6 @@ class QLController(TQController):
         performances = []
         for i in np.arange(self.num_episodes):
             agent = QLAgent(policy)
-            # tmp = agent.update(self.start[1], self.start[0], evaluator, env)
             agent.wrapper(self.start[1], self.start[0], evaluator, env)
             performances.append(evaluator.get_pef())
         t = time.localtime()
@@ -66,9 +66,9 @@ class QLController(TQController):
         plt.figure(figsize=(6,4))
         plt.plot(performances)
         plt.title(f"Q-Learning iterations(n = {self.num_episodes})")
-        plt.savefig(f"../plot/q_iterations_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
+        plt.savefig(f"../plot/revised_q_iterations_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
         
         plt.figure(figsize=(8,8))
         sns.heatmap(evaluator.V)
         plt.title(f"Q-Learning heatmap(n = {self.num_episodes})")
-        plt.savefig(f"../plot/q_heat_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
+        plt.savefig(f"../plot/revised_q_heat_{timestamp}_alpha{self.alpha}_gamma{self.gamma}_e{self.epsilon}_iter{self.num_episodes}.png")
